@@ -1,0 +1,46 @@
+InkColorSwap,False, 
+
+LinesDegradation,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+PaperFactory,False, 
+
+ColorPaper,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.1, 'hue_range': [0, 255], 'saturation_range': [10, 40]} 
+
+OneOf,True,{'augmentations': [Delaunay Tessellation range of random points on geometric plane = (500, 800), range of horizontal edge points = (500, 800), range of vertical edge points = (500, 800), noise_type = random, color_list = default, color_list_alternate = default, QuasiPattern Distortion(imgx=407, imgy=407, n_rotation_range = (10, 15), color=random, alpha_range=(0.25, 0.5), numba_jit=1, p=1.0), Voronoi Tessellation(amplification_factor_range = (50, 80) , seed = 19829813472, range of random points = (500, 1000), noise_type=random, background_value = (200, 255), numba_jit=1, p=1)], 'augmentation_probabilities': [0.34311836239127097, 0.4158428465110033, 0.24103879109772577], 'p': 0.1} 
+
+PatternGenerator,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1.0, 'imgx': 407, 'imgy': 407, 'n_rotation_range': [10, 15], 'color': 'random', 'alpha_range': [0.25, 0.5], 'n_rotation': 11} 
+
+WaterMark,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+

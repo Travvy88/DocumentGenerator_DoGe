@@ -1,0 +1,46 @@
+InkColorSwap,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.1, 'ink_swap_color': 'random', 'ink_swap_sequence_number_range': [5, 10], 'ink_swap_min_width_range': [2, 3], 'ink_swap_max_width_range': [100, 120], 'ink_swap_min_height_range': [2, 3], 'ink_swap_max_height_range': [100, 120], 'ink_swap_min_area_range': [10, 20], 'ink_swap_max_area_range': [400, 500]} 
+
+LinesDegradation,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+PaperFactory,False, 
+
+ColorPaper,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.1, 'hue_range': [0, 255], 'saturation_range': [10, 40]} 
+
+OneOf,False, 
+
+WaterMark,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [Markup(num_lines_range=(2, 7), markup_length_range=(0.5, 1), markup_thickness_range=(1, 2),  markup_typeunderline, markup_ink=random, markup_color=random, repetitions=1, large_word_mode=random, single_word_mode=False, p=1), PencilScribbles(scribbles_type=random, scribbles_ink=random, scribbles_location=random, scribbles_size_range=(250, 600), scribbles_count_range=(1, 6), scribbles_thickness_range=(1, 3), scribbles_brightness_change=[32, 64, 128], scribbles_skeletonize=0, scribbles_skeletonize_iterations=(2, 3), scribbles_color=random, scribbles_text=random, scribbles_text_font=random, scribbles_text_rotate_range=(0, 360), scribbles_lines_stroke_count_range=(1, 6), p=1)], 'augmentation_probabilities': [0.5079599531970602, 0.4920400468029397], 'p': 0.1} 
+
+Markup,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'num_lines_range': [2, 7], 'markup_length_range': [0.5, 1], 'markup_thickness_range': [1, 2], 'markup_type': 'underline', 'markup_ink': 'random', 'markup_color': 'random', 'repetitions': 1, 'large_word_mode': 'random', 'single_word_mode': False} 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+

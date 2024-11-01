@@ -1,0 +1,4 @@
+OneOf,True,{'augmentations': [Dithering(dither=floyd-steinberg, order=(3, 5), numba_jit=1, p=1), InkBleed(intensity_range=(0.1, 0.2), kernel_size=(3, 3), severity=(0.4, 0.6), p=1)], 'augmentation_probabilities': [0.2610592161353274, 0.7389407838646727], 'p': 1} 
+
+InkBleed,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'intensity_range': [0.1, 0.2], 'kernel_size': [3, 3], 'severity': [0.4, 0.6]} 
+

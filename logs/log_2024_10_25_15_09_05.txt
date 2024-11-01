@@ -1,0 +1,4 @@
+InkShifter,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1.0, 'text_shift_scale_range': [18, 27], 'text_shift_factor_range': [1, 4], 'text_fade_range': [0, 2], 'noise_type': 'random', 'blur_kernel_size': [5, 5], 'blur_sigma': 0} 
+
+PageBorder,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'page_border_width_height': 'random', 'page_border_color': [0, 0, 0], 'page_border_background_color': [0, 0, 0], 'page_border_use_cache_images': 0, 'page_border_trim_sides': [0, 0, 0, 0], 'page_numbers': 'random', 'page_rotate_angle_in_order': 1, 'page_rotation_angle_range': [-3, 3], 'curve_frequency': [0, 1], 'curve_height': [2, 4], 'curve_length_one_side': [50, 100], 'same_page_border': 1} 
+

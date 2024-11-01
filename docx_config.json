@@ -1,0 +1,12 @@
+{
+    "max_words": 20000,
+    "p_2columns": 0.2,
+    "font_size_interval": [8, 13],
+    "p_line_spacing": [0.33, 0.33, 0.33],
+    "p_text_alignment": [0.1, 0.4, 0, 0.5],
+    "p_heading_bold": 0.5,
+    "heading_relative_size_interval": [1, 2],
+    "p_heading_alignment": [0.5, 0.25, 0.01, 0.24],
+    "table_max_rows": 15,
+    "table_max_cols": 5
+}

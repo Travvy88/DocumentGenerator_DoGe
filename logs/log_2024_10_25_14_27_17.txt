@@ -1,0 +1,46 @@
+InkColorSwap,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.1, 'ink_swap_color': 'random', 'ink_swap_sequence_number_range': [5, 10], 'ink_swap_min_width_range': [2, 3], 'ink_swap_max_width_range': [100, 120], 'ink_swap_min_height_range': [2, 3], 'ink_swap_max_height_range': [100, 120], 'ink_swap_min_area_range': [10, 20], 'ink_swap_max_area_range': [400, 500]} 
+
+LinesDegradation,False, 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [<augraphy.augmentations.inkshifter.InkShifter object at 0x7fbdcfcbd000>, BleedThrough(intensity_range=(0.1, 0.3), color_range=(32, 224), ksize=(17, 17), sigmaX=1,alpha=0.13018979669446967,offsets=(10, 20),p=1)], 'augmentation_probabilities': [0.14885575837316306, 0.8511442416268369], 'p': 0.1} 
+
+BleedThrough,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'intensity_range': [0.1, 0.3], 'color_range': [32, 224], 'ksize': [17, 17], 'sigmaX': 1, 'alpha': 0.13018979669446967, 'offsets': [10, 20]} 
+
+OneOf,False, 
+
+OneOf,False, 
+
+PaperFactory,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.1, 'texture_path': './paper_textures', 'generate_texture': 0, 'generate_texture_background_type': 'random', 'generate_texture_edge_type': 'random', 'texture_enable_color': 'random', 'texture_color': 'random', 'texture_color_blend_method': 'overlay', 'blend_texture': 'random', 'blend_texture_path': './paper_textures', 'blend_generate_texture': 0, 'blend_texture_background_type': 'random', 'blend_texture_edge_type': 'random', 'blend_method': 'ink_to_paper', 'texture_file_names': [], 'paper_textures': [], 'blend_texture_file_names': [], 'blend_paper_textures': []} 
+
+ColorPaper,False, 
+
+OneOf,False, 
+
+WaterMark,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+

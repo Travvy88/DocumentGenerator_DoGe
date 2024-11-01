@@ -1,0 +1,48 @@
+InkColorSwap,False, 
+
+LinesDegradation,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+PaperFactory,False, 
+
+ColorPaper,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.1, 'hue_range': [0, 255], 'saturation_range': [10, 40]} 
+
+OneOf,False, 
+
+WaterMark,False, 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [GlitchEffect(glitch_direction=random, glitch_number_range=(8, 16), glitch_size_range=(5, 50), glitch_offset_range=(10, 50), p=1), ColorShift(color_shift_offset_x_range=(3, 5), color_shift_offset_y_range=(3, 5), color_shift_iterations=(2, 3), color_shift_brightness_range=(0.9, 1.1), color_shift_gaussian_kernel_range=(3, 3), p=1)], 'augmentation_probabilities': [0.5091207059923119, 0.49087929400768815], 'p': 0.1} 
+
+GlitchEffect,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'glitch_direction': 'random', 'glitch_number_range': [8, 16], 'glitch_size_range': [5, 50], 'glitch_offset_range': [10, 50]} 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [SubtleNoise(subtle_range=10, p=1), Jpeg(quality_range=(25, 95), p=1)], 'augmentation_probabilities': [0.5818424868593911, 0.41815751314060884], 'p': 0.1} 
+
+SubtleNoise,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'subtle_range': 10} 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+

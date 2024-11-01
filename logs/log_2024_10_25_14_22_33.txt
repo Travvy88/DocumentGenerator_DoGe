@@ -1,0 +1,50 @@
+InkColorSwap,False, 
+
+LinesDegradation,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 0.2, 'line_roi': [0.0, 0.0, 1.0, 1.0], 'line_gradient_range': [32, 255], 'line_gradient_direction': [0, 2], 'line_split_probability': [0.2, 0.4], 'line_replacement_value': [250, 255], 'line_min_length': [30, 40], 'line_long_to_short_ratio': [5, 7], 'line_replacement_probability': [0.4, 0.5], 'line_replacement_thickness': [1, 3]} 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+PaperFactory,False, 
+
+ColorPaper,False, 
+
+OneOf,False, 
+
+WaterMark,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [SubtleNoise(subtle_range=6, p=1), Jpeg(quality_range=(25, 95), p=1)], 'augmentation_probabilities': [0.8551048246969581, 0.14489517530304186], 'p': 0.2} 
+
+SubtleNoise,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'subtle_range': 6} 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [BadPhotoCopy(noise_mask=None, noise_type=-1, noise_side=random, noise_iteration=(1, 2), noise_size=(1, 3), noise_value=[128, 196], noise_sparsity=[0.3, 0.6], noise_concentration=[0.1, 0.6], blur_noise=False, blur_noise_kernel=(5, 5), wave_pattern=True, edge_effect=False, numba_jit=1, p=1), ShadowCast(shadow_side=random, shadow_vertices_range=(1, 20), shadow_width_range=(0.3, 0.8), shadow_height_range=(0.3, 0.8), shadow_color=(0, 0, 0), shadow_opacity_range=(0.2, 0.9), shadow_iterations_range=(1, 2), shadow_blur_kernel_range=(101, 301), p=1), <augraphy.augmentations.lowlightnoise.LowLightNoise object at 0x7f2492c45210>], 'augmentation_probabilities': [0.23897549867791446, 0.31409733395708556, 0.44692716736499993], 'p': 0.2} 
+
+LowLightNoise,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'num_photons_range': [50, 100], 'alpha_range': [0.7, 1.0], 'beta_range': [10, 30], 'gamma_range': [1, 1.8], 'bias_range': [20, 40], 'dark_current_value': 1.0, 'exposure_time': 0.2, 'gain': 0.1} 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,False, 
+
+OneOf,True,{'augmentations': [InkMottling(ink_mottling_alpha_range=(0.2, 0.3), ink_mottling_noise_scale_range=(2, 2), ink_mottling_gaussian_kernel_range=(3, 5), p=1), ReflectedLight(reflected_light_smoothness=0.8, reflected_light_internal_radius_range=(0.0, 0.001), reflected_light_external_radius_range=(0.5, 0.8), reflected_light_minor_major_ratio_range=(0.9, 1.0),  reflected_light_color=(255, 255, 255), reflected_light_internal_max_brightness_range=(0.75, 0.75), reflected_light_external_max_brightness_range=(0.5, 0.75)， reflected_light_location=random, reflected_light_ellipse_angle_range=(0, 360), reflected_light_gaussian_kernel_size_range=(5, 310),p=0.2)], 'augmentation_probabilities': [0.7482354834459599, 0.2517645165540401], 'p': 0.2} 
+
+InkMottling,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'ink_mottling_alpha_range': [0.2, 0.3], 'ink_mottling_noise_scale_range': [2, 2], 'ink_mottling_gaussian_kernel_range': [3, 5]} 
+
+OneOf,False, 
+
