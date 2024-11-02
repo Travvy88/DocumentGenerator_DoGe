@@ -43,7 +43,7 @@ class DocxDocument:
         self.font_name = np.random.choice(self._list_available_fonts())
         
         self.line_spacing = np.random.choice(
-            (WD_LINE_SPACING.SINGLE, WD_LINE_SPACING.ONE_POINT_FIVE, WD_LINE_SPACING.DOUBLE), 
+            (WD_LINE_SPACING.ONE_POINT_FIVE, WD_LINE_SPACING.DOUBLE), 
             p=self._normalize_probabilities(self.docx_config["p_line_spacing"])) 
 
         self.paragraph_alignment = np.random.choice(
@@ -121,8 +121,8 @@ class DocxDocument:
             paragraph = self.doc.add_heading(level=level)
             _, metadata = self.add_words(text, paragraph)
             self.color2word.update(metadata)
-            for run in paragraph.runs:
-                run.font.size = self.heading_size
+            #for run in paragraph.runs:
+                #run.font.size = self.heading_size
             paragraph.alignment = self.heading_alignment
     
     def add_table(self, html_element):

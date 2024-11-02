@@ -40,7 +40,7 @@ class DocumentGenerator:
         self.doc = None
         self.image_counter = 0
         
-        self.debug_mode = True
+        self.debug_mode = False
 
         command = f"/usr/bin/python3 -m unoserver.server --port {port} --uno-port {uno_port}"
         #self.process = subprocess.Popen('pkill -f uno', shell=True)
@@ -76,29 +76,32 @@ class DocumentGenerator:
                 
             if self.doc.get_num_words() > self.docx_config["max_words"]:
                 break
-        # get annotations by colored images
-        colored_images = self.doc.get_images(dpi=72, image_size=1024)
-        if self.debug_mode:
-            for image in colored_images:
-                image.save(self.out_folder / f"im_{self.image_counter}_colored.png")
-        annotations = self.get_bboxes(colored_images)
+        # extract annotations from colored images
+        colored_images = self.doc.get_images(dpi=200, image_size=1500)
+        annotations = self.get_bboxes(colored_images)  # bboxes are normalized to [0,1]
         self.doc.convert_to_uncolored_docx()
-        images = self.doc.get_images(dpi=72, image_size=1024)
+        images = self.doc.get_images(dpi=200, image_size=1024)  # get images for augmentation stage
         
         for i, image in enumerate(images):
-            # augment image
-            bounding_boxes = annotations[i]["bboxes"]
+            # unnormalize bboxes to augmentation image size
+            bounding_boxes = np.array(annotations[i]["bboxes"])
+            bounding_boxes[:, 0] = bounding_boxes[:, 0] * image.size[0]
+            bounding_boxes[:, 1] = bounding_boxes[:, 1] * image.size[1]
+            bounding_boxes[:, 2] = bounding_boxes[:, 2] * image.size[0] 
+            bounding_boxes[:, 3] = bounding_boxes[:, 3] * image.size[1]
+
+            # perform augmentation
             augmentation_pipeline = AugraphyPipeline(bounding_boxes=bounding_boxes,
                                                      log=False, **get_augmentation_phases())
             augmented_cv2, _, _, augmented_bounding_boxes = augmentation_pipeline(np.array(image)[:, :, ::-1])
             
-            # resize and save image
+            # resize image to final dataset size and save 
             augmented_cv2 = cv2.resize(augmented_cv2, (self.image_size, self.image_size))
             cv2.imwrite(str(self.out_folder / f"im_{self.image_counter}.png"), augmented_cv2)
             if self.debug_mode:
                 colored_images[i].save(self.out_folder / f"im_{self.image_counter}_colored.png")
             
-            # convert booxes to (x y w h) format
+            # convert booxes to (x, y, w, h) format and normalize to [0,1]
             augmented_bounding_boxes = np.array(augmented_bounding_boxes).astype(int)
             x1, y1, x2, y2 = augmented_bounding_boxes[:, 0], augmented_bounding_boxes[:, 1], \
                              augmented_bounding_boxes[:, 2], augmented_bounding_boxes[:, 3]
@@ -141,7 +144,13 @@ class DocumentGenerator:
                     if color in self.doc.color2word:
                         word = self.doc.color2word[color]
                         image_annotations['words'].append(word)
-                        image_annotations["bboxes"].append((x, y, x + w, y + h))
+                        image_annotations["bboxes"].append(
+                            (
+                                x / width, 
+                                y / height, 
+                                (x + w) / width, 
+                                (y + h) / height)
+                             )
                        # (x / width, y / height, w / width, h / height)
             annotations.append(image_annotations)
         return annotations
