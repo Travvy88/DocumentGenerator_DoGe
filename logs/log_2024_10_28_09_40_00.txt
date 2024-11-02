@@ -1,6 +1,0 @@
-OneOf,True,{'augmentations': [<augraphy.augmentations.inkshifter.InkShifter object at 0x7f58c8d38760>, GlitchEffect(glitch_direction=random, glitch_number_range=(8, 16), glitch_size_range=(5, 50), glitch_offset_range=(10, 50), p=1)], 'augmentation_probabilities': [0.5797442407084897, 0.4202557592915102], 'p': 1} 
-
-InkShifter,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1.0, 'text_shift_scale_range': [18, 27], 'text_shift_factor_range': [1, 4], 'text_fade_range': [0, 2], 'noise_type': 'random', 'blur_kernel_size': [5, 5], 'blur_sigma': 0} 
-
-SectionShift,True,{'mask': None, 'keypoints': {}, 'bounding_boxes': [], 'numba_jit': 1, 'p': 1, 'section_shift_number_range': [3, 5], 'section_shift_locations': 'random', 'section_shift_x_range': [-10, 10], 'section_shift_y_range': [-10, 10], 'section_shift_fill_value': -1} 
-
