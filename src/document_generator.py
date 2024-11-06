@@ -60,10 +60,13 @@ class DocumentGenerator:
     
     def generate(self, urls):
         print('Start Document Generator...')
-        with ThreadPoolExecutor() as executor:
-            futures = [executor.submit(self.create_doc_, url, i) for i, url in enumerate(urls)]
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(self.create_doc, url, i) for i, url in enumerate(urls)]
             for future in futures:
-                future.result()
+                try:
+                    future.result()
+                except Exception as e:
+                    print(traceback.format_exc())
     
     def create_doc_(self, url, i):
         try:
@@ -98,6 +101,7 @@ class DocumentGenerator:
         self.doc.convert_to_uncolored_docx()
         images = self.doc.get_images(dpi=200, image_size=1024)  # get images for augmentation stage
         
+        print(threading.current_thread().name, len(annotations), len(images), len(colored_images), threading.active_count())
         for i, image in enumerate(images):
             # unnormalize bboxes to augmentation image size
             bounding_boxes = np.array(annotations[i]["bboxes"])
@@ -109,29 +113,29 @@ class DocumentGenerator:
             # perform augmentation
             augmentation_pipeline = AugraphyPipeline(bounding_boxes=bounding_boxes,
                                                      log=False, **get_augmentation_phases())
-            augmented_cv2, _, _, augmented_bounding_boxes = augmentation_pipeline(np.array(image)[:, :, ::-1])
-            
-            # resize image to final dataset size and save 
-            augmented_cv2 = cv2.resize(augmented_cv2, (self.image_size, self.image_size))
-            cv2.imwrite(str(self.out_folder / f"im_{self.image_counter}.png"), augmented_cv2)
-            if self.debug_mode:
-                colored_images[i].save(self.out_folder / f"im_{self.image_counter}_colored.png")
-            
-            # convert booxes to (x, y, w, h) format and normalize to [0,1]
-            augmented_bounding_boxes = np.array(augmented_bounding_boxes).astype(int)
-            x1, y1, x2, y2 = augmented_bounding_boxes[:, 0], augmented_bounding_boxes[:, 1], \
-                             augmented_bounding_boxes[:, 2], augmented_bounding_boxes[:, 3]
-            width, height = image.size
-            x = x1 / width
-            y = y1 / height
-            w = (x2 - x1) / width
-            h = (y2 - y1) / height
-            annotations[i]["bboxes"] = np.column_stack((x, y, w, h)).tolist()
+            augmented_cv2, _, _, augmented_bounding_boxes = augmentation_pipeline(np.array(image))
+            with threading.Lock():
+                # resize image to final dataset size and save 
+                augmented_cv2 = cv2.resize(augmented_cv2, (self.image_size, self.image_size))
+                cv2.imwrite(str(self.out_folder / f"im_{self.image_counter}.png"), augmented_cv2)
+                if self.debug_mode:
+                    colored_images[i].save(self.out_folder / f"im_{self.image_counter}_colored.png")
+                
+                # convert booxes to (x, y, w, h) format and normalize to [0,1]
+                augmented_bounding_boxes = np.array(augmented_bounding_boxes).astype(int)
+                x1, y1, x2, y2 = augmented_bounding_boxes[:, 0], augmented_bounding_boxes[:, 1], \
+                                augmented_bounding_boxes[:, 2], augmented_bounding_boxes[:, 3]
+                width, height = image.size
+                x = x1 / width
+                y = y1 / height
+                w = (x2 - x1) / width
+                h = (y2 - y1) / height
+                annotations[i]["bboxes"] = np.column_stack((x, y, w, h)).tolist()
 
-            # save annotation
-            with open(self.out_folder/ f"im_{self.image_counter}.png.json", "w") as f:
-                json.dump(annotations[i], f)
-            self.image_counter += 1       
+                # save annotation
+                with open(self.out_folder/ f"im_{self.image_counter}.png.json", "w") as f:
+                    json.dump(annotations[i], f)
+                self.image_counter += 1       
   
     def get_bboxes(self, images):
         annotations = []
