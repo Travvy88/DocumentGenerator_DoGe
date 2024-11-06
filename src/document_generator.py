@@ -1,4 +1,5 @@
 import cProfile
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
@@ -14,6 +15,7 @@ import requests
 from tqdm import tqdm
 from PIL import ImageDraw
 import cv2 
+import threading
 
 from src.augmentations import get_augmentation_phases
 from src.docx_document import DocxDocument
@@ -48,13 +50,26 @@ class DocumentGenerator:
         self.process = subprocess.Popen(command, shell=True)
         self.uno_client = client.UnoClient(port=port)
 
-    def generate(self, urls):
+    def generate_(self, urls):
         print('Start Document Generator...')
         for i, url in tqdm(enumerate(urls)):
             try:
                 self.create_doc(url, i)
             except Exception as e:
                 print(traceback.format_exc())
+    
+    def generate(self, urls):
+        print('Start Document Generator...')
+        with ThreadPoolExecutor() as executor:
+            futures = [executor.submit(self.create_doc_, url, i) for i, url in enumerate(urls)]
+            for future in futures:
+                future.result()
+    
+    def create_doc_(self, url, i):
+        try:
+            self.create_doc(url, i)
+        except Exception as e:
+            print(traceback.format_exc())
 
     #@profileit
     def create_doc(self, url, i):
@@ -76,6 +91,7 @@ class DocumentGenerator:
                 
             if self.doc.get_num_words() > self.docx_config["max_words"]:
                 break
+            
         # extract annotations from colored images
         colored_images = self.doc.get_images(dpi=200, image_size=1500)
         annotations = self.get_bboxes(colored_images)  # bboxes are normalized to [0,1]
