@@ -82,6 +82,7 @@ class DocumentGenerator:
         self.doc.convert_to_uncolored_docx()
         images = self.doc.get_images(dpi=200, image_size=1024)  # get images for augmentation stage
         
+        print(len(annotations), len(images), len(colored_images))
         for i, image in enumerate(images):
             # unnormalize bboxes to augmentation image size
             bounding_boxes = np.array(annotations[i]["bboxes"])
@@ -93,7 +94,7 @@ class DocumentGenerator:
             # perform augmentation
             augmentation_pipeline = AugraphyPipeline(bounding_boxes=bounding_boxes,
                                                      log=False, **get_augmentation_phases())
-            augmented_cv2, _, _, augmented_bounding_boxes = augmentation_pipeline(np.array(image)[:, :, ::-1])
+            augmented_cv2, _, _, augmented_bounding_boxes = augmentation_pipeline(np.array(image))
             
             # resize image to final dataset size and save 
             augmented_cv2 = cv2.resize(augmented_cv2, (self.image_size, self.image_size))
