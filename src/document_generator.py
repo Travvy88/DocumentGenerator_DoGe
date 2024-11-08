@@ -1,6 +1,7 @@
 import cProfile
 from concurrent.futures import ThreadPoolExecutor
 import json
+import multiprocessing
 import os
 from pathlib import Path
 import subprocess
@@ -38,8 +39,7 @@ class DocumentGenerator:
         self.docx_config = docx_config
         self.port = port
         self.uno_port = uno_port
-
-        self.doc = None
+        
         self.image_counter = 0
         
         self.debug_mode = False
@@ -47,28 +47,20 @@ class DocumentGenerator:
         command = f"/usr/bin/python3 -m unoserver.server --port {port} --uno-port {uno_port}"
         #self.process = subprocess.Popen('pkill -f uno', shell=True)
         print('START SERVER', port, uno_port)
-        self.process = subprocess.Popen(command, shell=True)
+        self.unoserver_process = subprocess.Popen(command, shell=True)
         self.uno_client = client.UnoClient(port=port)
-
-    def generate_(self, urls):
-        print('Start Document Generator...')
-        for i, url in tqdm(enumerate(urls)):
-            try:
-                self.create_doc(url, i)
-            except Exception as e:
-                print(traceback.format_exc())
     
+    def __del__(self):
+        self.unoserver_process.kill()
+
     def generate(self, urls):
         print('Start Document Generator...')
         with ThreadPoolExecutor(max_workers=10) as executor:
-            futures = [executor.submit(self.create_doc, url, i) for i, url in enumerate(urls)]
+            futures = [executor.submit(self.create_doc_try_except, url, i) for i, url in enumerate(urls)]
             for future in futures:
-                try:
-                    future.result()
-                except Exception as e:
-                    print(traceback.format_exc())
+                future.result()
     
-    def create_doc_(self, url, i):
+    def create_doc_try_except(self, url, i):
         try:
             self.create_doc(url, i)
         except Exception as e:
@@ -76,7 +68,7 @@ class DocumentGenerator:
 
     #@profileit
     def create_doc(self, url, i):
-        self.doc = DocxDocument(self.docx_config, self.uno_client)
+        doc = DocxDocument(self.docx_config, self.uno_client)
         response = requests.get(url)
         if response.status_code != 200:
             print(f"Bad Response: {response}")
@@ -86,22 +78,20 @@ class DocumentGenerator:
         soup = BeautifulSoup(response.text, 'html.parser')
         for element in soup.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', "table"]):
             if element.name.startswith('h'):
-                self.doc.add_heading(element)
+                doc.add_heading(element)
             elif element.name == "table":
-                self.doc.add_table(element)
+                doc.add_table(element)
             else:
-                self.doc.add_text(element)
+                doc.add_text(element)
                 
-            if self.doc.get_num_words() > self.docx_config["max_words"]:
+            if doc.get_num_words() > self.docx_config["max_words"]:
                 break
             
         # extract annotations from colored images
-        colored_images = self.doc.get_images(dpi=200, image_size=1500)
-        annotations = self.get_bboxes(colored_images)  # bboxes are normalized to [0,1]
-        self.doc.convert_to_uncolored_docx()
-        images = self.doc.get_images(dpi=200, image_size=1024)  # get images for augmentation stage
-        
-        print(threading.current_thread().name, len(annotations), len(images), len(colored_images), threading.active_count())
+        colored_images = doc.get_images(dpi=200, image_size=1500)
+        annotations = self.get_bboxes(colored_images, doc.color2word)  # bboxes are normalized to [0,1]
+        doc.convert_to_uncolored_docx()
+        images = doc.get_images(dpi=200, image_size=1024)  # get images for augmentation stage        
         for i, image in enumerate(images):
             # unnormalize bboxes to augmentation image size
             bounding_boxes = np.array(annotations[i]["bboxes"])
@@ -137,7 +127,7 @@ class DocumentGenerator:
                     json.dump(annotations[i], f)
                 self.image_counter += 1       
   
-    def get_bboxes(self, images):
+    def get_bboxes(self, images, color2word):
         annotations = []
         for image_pil in images:
             draw = ImageDraw.Draw(image_pil)
@@ -161,8 +151,8 @@ class DocumentGenerator:
 
                     rgb_color = image_pil.getpixel((x+1, y+1))
                     color = '#%02x%02x%02x' % (rgb_color)
-                    if color in self.doc.color2word:
-                        word = self.doc.color2word[color]
+                    if color in color2word:
+                        word = color2word[color]
                         image_annotations['words'].append(word)
                         image_annotations["bboxes"].append(
                             (
@@ -171,6 +161,5 @@ class DocumentGenerator:
                                 (x + w) / width, 
                                 (y + h) / height)
                              )
-                       # (x / width, y / height, w / width, h / height)
             annotations.append(image_annotations)
         return annotations
