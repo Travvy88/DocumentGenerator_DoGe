@@ -131,5 +131,3 @@ class Manager:
         
         for i in range(self.num_processes):
             shutil.rmtree(self.out_dir / f'tmp_process_{i}')
-
-            

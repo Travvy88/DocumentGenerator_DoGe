@@ -245,7 +245,7 @@ class DocxDocument:
         self.doc.save(out)
         doc_bytes = out.getvalue()
         pdf_bytes = self.uno_client.convert(indata=doc_bytes, convert_to='pdf')
-        return convert_from_bytes(pdf_bytes, thread_count=2, dpi=dpi, size=image_size)
+        return convert_from_bytes(pdf_bytes, dpi=dpi, size=image_size)
     
     def convert_to_uncolored_docx(self):
         for paragraph in self.doc.paragraphs:

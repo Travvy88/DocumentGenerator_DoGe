@@ -344,14 +344,14 @@ def get_augmentation_phases():
         ),
         OneOf(
             [
-                Squish(
-                    squish_direction="random",
-                    squish_location="random",
-                    squish_number_range=(5, 10),
-                    squish_distance_range=(5, 7),
-                    squish_line="random",
-                    squish_line_thickness_range=(1, 1),
-                ),
+                #Squish(
+                #    squish_direction="random",
+                #    squish_location="random",
+                #    squish_number_range=(5, 10),
+                #    squish_distance_range=(5, 7),
+                #   squish_line="random",
+                #   squish_line_thickness_range=(1, 1),
+                #),
                 Geometric(
                     fliplr=False,
                     flipud=False,
