@@ -4,6 +4,12 @@ DoGe is designed to synthesize a dataset of realistic document scans. Each docum
 tables, pargraphs with different formatting and fonts which is parsed from Wiki and a bit randomized. The coordinates 
 of the words are extracted using the No-OCR method we invented for faster generation on CPU. 
 
+## Image examples (size 244)
+
+![Example 1](resources/im_60.png)
+![Example 2](resources/im_70.png)
+![Example 3](resources/im_99.png)
+![Example 4](resources/im_185.png)
 
 ## Usage
 
@@ -16,7 +22,7 @@ python main.py --out_dir data --remove_excisting_dir True --image_size 244 --max
 ## How it works
 
 ### Generation Process
-![General scheme](resources/scheme.png "General scheme of DoGe")
+![General scheme](resources/DoGe_Scheme.png "General scheme of DoGe")
 
 DoGe get HTML page of Wikipedia. Headers, paragrpahs formatting, tables are extracted and placed into Docx document. Each word is placed 
 in separate Run tag inside Docx.
@@ -34,9 +40,4 @@ All rectangles coordinates are detected via OpenCV on document images. The word 
 - DocumentGenerators DocxDocument
 
 
-## Image examples (size 244)
 
-![Example 1](resources/im_60.png)
-![Example 2](resources/im_70.png)
-![Example 3](resources/im_99.png)
-![Example 4](resources/im_185.png)
