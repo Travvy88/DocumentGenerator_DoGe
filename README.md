@@ -4,12 +4,12 @@ DoGe is designed to synthesize a dataset of realistic document scans. Each docum
 tables, pargraphs with different formatting and fonts which is parsed from Wikipedia. The coordinates 
 of the words are extracted using the No-OCR method we invented for faster generation on CPU.
 
-## Image examples (size 244)
+## Image examples
 
-![Example 1](resources/im_60.png)
-![Example 2](resources/im_70.png)
-![Example 3](resources/im_99.png)
-![Example 4](resources/im_185.png)
+![Example 1](resources/im_2.png)
+![Example 2](resources/im_9.png)
+![Example 3](resources/im_10.png)
+![Example 4](resources/im_12.png)
 
 ## Usage
 
