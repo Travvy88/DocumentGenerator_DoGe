@@ -18,7 +18,7 @@ def get_augmentation_phases():
             ink_swap_max_height_range=(100, 120),
             ink_swap_min_area_range=(10, 20),
             ink_swap_max_area_range=(400, 500),
-            p=0.1,
+            p=0.08,
         ),
         LinesDegradation(
             line_roi=(0.0, 0.0, 1.0, 1.0),
@@ -30,7 +30,7 @@ def get_augmentation_phases():
             line_long_to_short_ratio=(5, 7),
             line_replacement_probability=(0.4, 0.5),
             line_replacement_thickness=(1, 3),
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -44,7 +44,7 @@ def get_augmentation_phases():
                     severity=(0.4, 0.6),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -65,7 +65,7 @@ def get_augmentation_phases():
                     offsets=(10, 20),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -88,7 +88,7 @@ def get_augmentation_phases():
                     blur=1,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -104,16 +104,16 @@ def get_augmentation_phases():
                     noise_probability=0.1,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
     ]
 
     paper_phase = [
-        PaperFactory(p=0.1),
+        PaperFactory(p=0.08),
         ColorPaper(
             hue_range=(0, 255),
             saturation_range=(10, 40),
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -130,7 +130,7 @@ def get_augmentation_phases():
                     imgy=random.randint(256, 512),
                     n_rotation_range=(10, 15),
                     color="random",
-                    alpha_range=(0.25, 0.5),
+                    alpha_range=(0.05, 0.2),
                 ),
                 #VoronoiTessellation(
                  #   mult_range=(50, 80),
@@ -140,7 +140,7 @@ def get_augmentation_phases():
                   #  background_value=(200, 255),
                 #),
             ],
-            p=0.1,
+            p=0.08,
         ),
         WaterMark(
             watermark_word="random",
@@ -150,15 +150,15 @@ def get_augmentation_phases():
             watermark_location="random",
             watermark_color="random",
             watermark_method="darken",
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
                 AugmentationSequence(
                     [
                         NoiseTexturize(
-                            sigma_range=(3, 10),
-                            turbulence_range=(2, 5),
+                            sigma_range=(3, 7),
+                            turbulence_range=(1, 4),
                             texture_width_range=(300, 500),
                             texture_height_range=(300, 500),
                         ),
@@ -175,15 +175,15 @@ def get_augmentation_phases():
                             deviation=0.03,
                         ),
                         NoiseTexturize(
-                            sigma_range=(3, 10),
-                            turbulence_range=(2, 5),
+                            sigma_range=(3, 7),
+                            turbulence_range=(1, 4),
                             texture_width_range=(300, 500),
                             texture_height_range=(300, 500),
                         ),
                     ],
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
     ]
 
@@ -194,7 +194,7 @@ def get_augmentation_phases():
                 color_shift_iterations=(2, 3),
                 color_shift_brightness_range=(0.9, 1.1),
                 color_shift_gaussian_kernel_range=(3, 3),
-                p=0.1,
+                p=0.08,
             ),
         OneOf(
             [
@@ -206,28 +206,28 @@ def get_augmentation_phases():
                     noise_value=(64, 224),
                     ksize=random.choice([(3, 3), (5, 5), (7, 7)]),
                     sigmaX=0,
-                    p=0.1,
+                    p=0.08,
                 ),
                 DirtyRollers(
                     line_width_range=(2, 32),
                     scanline_type=0,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
                 LightingGradient(
                     light_position=None,
                     direction=None,
-                    max_brightness=255,
-                    min_brightness=0,
+                    max_brightness=196,
+                    min_brightness=64,
                     mode="gaussian",
                     linear_decay_rate=None,
                     transparency=None,
                 ),
                 Brightness(
-                    brightness_range=(0.9, 1.1),
+                    brightness_range=(0.9, 1.06),
                     min_brightness=0,
                     min_brightness_value=(120, 150),
                 ),
@@ -235,18 +235,18 @@ def get_augmentation_phases():
                     gamma_range=(0.9, 1.1),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
                 SubtleNoise(
-                    subtle_range=random.randint(5, 10),
+                    subtle_range=random.randint(5, 7),
                 ),
                 Jpeg(
                     quality_range=(25, 95),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -272,7 +272,7 @@ def get_augmentation_phases():
                     scribbles_lines_stroke_count_range=(1, 6),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -301,7 +301,7 @@ def get_augmentation_phases():
                     shadow_blur_kernel_range=(101, 301),
                 ),
                 LowLightNoise(
-                    num_photons_range=(50, 100),
+                    num_photons_range=(50, 70),
                     alpha_range=(0.7, 1.0),
                     beta_range=(10, 30),
                     gamma_range=(1, 1.8),
@@ -311,7 +311,7 @@ def get_augmentation_phases():
                     gain=0.1,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -340,7 +340,7 @@ def get_augmentation_phases():
                     use_figshare_library=0,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -361,7 +361,7 @@ def get_augmentation_phases():
                     p=1,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -380,7 +380,7 @@ def get_augmentation_phases():
                     dot_matrix_rotate_value_range=(0, 360),
                 ),
                 Faxify(
-                    scale_range=(0.3, 0.6),
+                    scale_range=(0.3, 0.5),
                     monochrome=random.choice([0, 1]),
                     monochrome_method="random",
                     monochrome_arguments={},
@@ -391,7 +391,7 @@ def get_augmentation_phases():
                     sigma=(1, 3),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -411,10 +411,10 @@ def get_augmentation_phases():
                     reflected_light_location="random",
                     reflected_light_ellipse_angle_range=(0, 360),
                     reflected_light_gaussian_kernel_size_range=(5, 310),
-                    p=0.1,
+                    p=0.08,
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         OneOf(
             [
@@ -453,7 +453,7 @@ def get_augmentation_phases():
                     backdrop_color=(0, 0, 0),
                 ),
             ],
-            p=0.1,
+            p=0.08,
         ),
         # Rescale(scale = "original" , p = 1.0)
     ]

@@ -7,38 +7,37 @@ import time
 from tqdm import tqdm
 
 from src.document_generator import DocumentGenerator
-from src.url_generator import UrlGenerator
+from src.url_parser import UrlParser
 
 
 class Manager:
     def __init__(self, 
                  docx_config: dict,
                  out_dir: Path, 
-                 remove_excisting_dir=False,
-                 max_pages=100, 
-                 image_size=244, 
-                 pdf_dpi=72,
-                 start_page='https://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0',
-                 languages=('ru',), 
-                 max_urls=100,
-                 num_processes=1, 
-                 ports=(2000, 2001)):
+                 remove_excisting_dir,
+                 image_size, 
+                 start_page,
+                 languages, 
+                 max_urls,
+                 num_processes, 
+                 max_threads,
+                 ports):
         
         self.docx_config = docx_config
         self.out_dir = out_dir
-        self.max_pages = max_pages
         self.image_size = image_size
-        self.pdf_dpi = pdf_dpi
         self.start_page = start_page
         self.languages = languages
         self.max_urls = max_urls
 
         self.num_processes = num_processes
+        self.max_threads = max_threads
         self.ports = ports
 
-        self.url_generator = UrlGenerator()
+        self.url_parser = UrlParser()
         self.folders = self._create_folders(remove_excisting_dir=remove_excisting_dir)
-        self.doc_generators = [DocumentGenerator(self.image_size, 
+        self.doc_generators = [DocumentGenerator(self.max_threads,
+                                                 self.image_size, 
                                                  self.docx_config, 
                                                  self.folders[i], 
                                                  ports[i], 
@@ -47,12 +46,13 @@ class Manager:
 
     def generate(self):
         start_time = time.time()
-        urls = self.url_generator.generate(self.start_page, self.max_urls, self.languages)
+        print('Parsing urls...')
+        urls = self.url_parser.parse(self.start_page, self.max_urls, self.languages)
         urls_chunks = self._split_urls_to_chunks(urls)
         processes = []
         
         for i in range(self.num_processes):
-            process = multiprocessing.Process(target=self.doc_generators[i].generate, 
+            process = multiprocessing.Process(name=f"Generator_{i}", target=self.doc_generators[i].generate, 
                                               kwargs={"urls": urls_chunks[i]})
             processes.append(process)
             process.start()

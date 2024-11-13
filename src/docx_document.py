@@ -115,8 +115,6 @@ class DocxDocument:
         if len(self.doc.paragraphs) > 1 and "Heading" in self.doc.paragraphs[-2].style.style_id:
             return
         
-        self.add_paragraph()
-        
         if text not in ["Contents"]:
             paragraph = self.doc.add_heading(level=level)
             _, metadata = self.add_words(text, paragraph)
@@ -124,6 +122,9 @@ class DocxDocument:
             #for run in paragraph.runs:
                 #run.font.size = self.heading_size
             paragraph.alignment = self.heading_alignment
+            
+            p = self.add_paragraph()
+            p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.SINGLE
     
     def add_table(self, html_element):
         rows = html_element.find_all('tr')

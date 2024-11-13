@@ -1,4 +1,4 @@
-git+https://github.com/Travvy88/augraphy
+-e git+https://github.com/Travvy88/augraphy.git@fix_bboxes_oneof_augmentation_sequence#egg=augraphy
 opencv-python==4.10.0.84
 python-docx==1.1.2
 matplotlib==3.8.2
