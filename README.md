@@ -4,7 +4,7 @@ DoGe is designed to synthesize a dataset of realistic document scans. Each docum
 tables, pargraphs with different formatting and fonts which is parsed from Wikipedia. The coordinates 
 of the words are extracted using the No-OCR method we invented for faster generation on CPU.
 
-## Image examples
+## Document examples
 
 <img src="resources/im_2.png" width="300">
 <img src="resources/im_9.png" width="300">
@@ -82,14 +82,6 @@ with the above Docx settings.
 
 Augmentation pipeline applies on a final stage. You can manage different augmentations 
 in `src/augmentations.py` file. Read the [Augraphy Docs](https://augraphy.readthedocs.io/en/latest/) for detailed explanation. 
-
-### Urls Parsing
-
-`src/UrlGenerator.py` generates a list of URLs by crawling the web, starting from a given start page, 
-and following links on each page. It uses `BeautifulSoup` to parse HTML content and extracts links, 
-then checks each link's validity, language and adds it to the list if it meets certain conditions. 
-The process continues until a maximum number of URLs is reached, and the method returns the list of 
-generated URLs, excluding the starting URL.
 
 
 ## How it works
