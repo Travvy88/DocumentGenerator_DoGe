@@ -6,10 +6,12 @@ of the words are extracted using the No-OCR method we invented for faster genera
 
 ## Image examples
 
-![Example 1](resources/im_2.png)
-![Example 2](resources/im_9.png)
-![Example 3](resources/im_10.png)
-![Example 4](resources/im_12.png)
+<img src="resources/im_2.png" width="300">
+<img src="resources/im_9.png" width="300">
+<img src="resources/im_10.png" width="300">
+<img src="resources/im_12.png" width="300">
+
+Check the full size (1024x1024) in [resources](./resources) folder.
 
 ## Usage
 
