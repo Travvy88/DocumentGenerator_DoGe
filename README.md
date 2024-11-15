@@ -1,7 +1,7 @@
 # DoGe — Synthetic DOcument GEnerator for Document AI
 
 DoGe is designed to synthesize a dataset of realistic document scans. Each document contains meaningful text, headings, 
-tables, pargraphs with different formatting and fonts which is parsed from Wikipedia. The coordinates 
+tables, paragraphs with different formatting and fonts which are parsed from Wikipedia. The coordinates 
 of the words are extracted using the No-OCR method we invented for faster generation on CPU.
 
 ## Document examples
