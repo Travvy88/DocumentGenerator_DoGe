@@ -1,8 +1,0 @@
-Images: 221.0
-Elapsed time: 125.8133647441864
-Urls per second: 0.12717249898317604
-Images per second: 1.756570142205119
-
-Seconds per url: 7.86333529651165
-Seconds per image: 0.5692912431863638
-Images per url: 13.8125
