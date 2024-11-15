@@ -17,7 +17,7 @@ def create_parser():
     parser.add_argument('--start_page', type=str, default='https://en.wikipedia.org/wiki/Main_Page',
                         help='Starting page URL (default: Wikipedia main page)')
     parser.add_argument('--languages', type=str, nargs='+', default=['en'],
-                        help='Languages allowed (default: en)')
+                        help='Permitted languages. Other languages will be ignored (default: English)')
     parser.add_argument('--max_urls', type=int, default=16,
                         help='Maximum number of URLs to process (default: 100)')
     parser.add_argument('--num_processes', type=int, default=1,

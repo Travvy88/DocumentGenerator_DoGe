@@ -24,7 +24,7 @@ cd DoGe
 docker build -t doge . && docker run -it doge
 ```
 
-## Ubuntu
+### Ubuntu
 
 For faster generation, it is recommended to install all dependencies without Docker. 
 Doge is tested on Ubuntu 22.04.
@@ -51,7 +51,7 @@ The following arguments can be passed to the script:
 - `--remove_excisting_dir`: If set to `True`, the output directory will be deleted before creating a new one. Default is `False`.
 - `--image_size`: The size of the final images. Default is `244`.
 - `--start_page`: The starting page URL. Default is the Wikipedia main page.
-- `--languages`: The list of languages to consider. Default is `['en']`.
+- `--languages`: Permitted languages. Other languages will be ignored. Default is `['en']`.
 - `--max_urls`: The maximum number of URLs to process. Default is `100`.
 - `--num_processes`: The number of processes to use. Default is `1`. Each process will start DocumentGenerator inside and start separate Unoserver.
 - `--max_threads`: The maximum threads inside a process. Default is `3`.
