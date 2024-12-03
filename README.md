@@ -6,10 +6,12 @@ of the words are extracted using the No-OCR method we invented for faster genera
 
 ## Document examples
 
-<img src="resources/im_2.png" width="300">
-<img src="resources/im_9.png" width="300">
-<img src="resources/im_10.png" width="300">
-<img src="resources/im_12.png" width="300">
+<div style="display: flex; flex-wrap: wrap;">
+    <img src="resources/im_2.png" width="300" style="margin-right: 10px; margin-bottom: 10px;">
+    <img src="resources/im_9.png" width="300" style="margin-right: 10px; margin-bottom: 10px;">
+    <img src="resources/im_10.png" width="300" style="margin-right: 10px; margin-bottom: 10px;">
+    <img src="resources/im_12.png" width="300" style="margin-right: 10px; margin-bottom: 10px;">
+</div>
 
 Check the full size (1024x1024) in [resources](./resources) folder.
 
@@ -48,7 +50,7 @@ python3 main.py --out_dir data --image_size 244 --max_urls 16 --num_processes 2 
 The following arguments can be passed to the script:
 
 - `--out_dir`: The output directory for saving results. This argument is required.
-- `--remove_excisting_dir`: If set to `True`, the output directory will be deleted before creating a new one. Default is `False`.
+- `--remove_existing_dir`: If set to `True`, the output directory will be deleted before creating a new one. Default is `False`.
 - `--image_size`: The size of the final images. Default is `244`.
 - `--start_page`: The starting page URL. Default is the Wikipedia main page.
 - `--languages`: Permitted languages. Other languages will be ignored. Default is `['en']`.
@@ -130,6 +132,12 @@ The bboxes are normalized and saved in XYWH format.
 
 The final step is deleting all color fills from words in the Docx document, rendering images, applying Augraphy augmentations, 
 and saving the augmented images to disk. That's it!
+
+## Future Plan
+
+- Download and place images into documents
+- Annotate headers, tables, paragraphs
+- Different output formats
 
 ## Acknowledgments
 Here are some great open-source projects I benefit from:

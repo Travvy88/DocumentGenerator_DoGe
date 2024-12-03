@@ -10,7 +10,7 @@ def create_parser():
     
     parser.add_argument('--out_dir', type=str, required=True,
                         help='Output directory for saving results')
-    parser.add_argument('--remove_excisting_dir', type=bool, default=False,
+    parser.add_argument('--remove_existing_dir', type=bool, default=False,
                         help='If out_dir excists, delete the folder and files before creating a new one')
     parser.add_argument('--image_size', type=int, default=244,
                         help='Size of the final images (default: 244)')
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     manager = Manager(
         docx_config=docx_config,
         out_dir=Path(args.out_dir),
-        remove_excisting_dir=args.remove_excisting_dir,
+        remove_existing_dir=args.remove_existing_dir,
         image_size=args.image_size,
         start_page=args.start_page,
         languages=tuple(args.languages),

@@ -95,6 +95,8 @@ class DocumentGenerator:
         doc.convert_to_uncolored_docx()
         images = doc.get_images(dpi=200, image_size=1024)  # get images for augmentation stage        
         for i, image in enumerate(images):
+            if len(annotations[i]['words']) != len(annotations[i]['bboxes']):
+                continue
             # unnormalize bboxes to augmentation image size
             bounding_boxes = np.array(annotations[i]["bboxes"])
             bounding_boxes[:, 0] = bounding_boxes[:, 0] * image.size[0]
@@ -163,6 +165,5 @@ class DocumentGenerator:
                                 (x + w) / width, 
                                 (y + h) / height)
                              )
-                        # TODO : check that len of words and bboxes are equal
             annotations.append(image_annotations)
         return annotations

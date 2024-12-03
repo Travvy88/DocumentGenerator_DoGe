@@ -1,3 +1,4 @@
+import json
 import multiprocessing
 import os
 from pathlib import Path
@@ -14,7 +15,7 @@ class Manager:
     def __init__(self, 
                  docx_config: dict,
                  out_dir: Path, 
-                 remove_excisting_dir,
+                 remove_existing_dir,
                  image_size, 
                  start_page,
                  languages, 
@@ -35,7 +36,7 @@ class Manager:
         self.ports = ports
 
         self.url_parser = UrlParser()
-        self.folders = self._create_folders(remove_excisting_dir=remove_excisting_dir)
+        self.folders = self._create_folders(remove_existing_dir=remove_existing_dir)
         self.doc_generators = [DocumentGenerator(self.max_threads,
                                                  self.image_size, 
                                                  self.docx_config, 
@@ -88,9 +89,9 @@ class Manager:
             chunks.append(urls[start_index:end_index])
         return chunks
     
-    def _create_folders(self, remove_excisting_dir):
+    def _create_folders(self, remove_existing_dir):
         folders = [self.out_dir / f"tmp_process_{i}" for i in range(self.num_processes)]
-        if remove_excisting_dir:
+        if remove_existing_dir:
             if os.path.exists(self.out_dir):
                 shutil.rmtree(self.out_dir)
             for folder in folders:
@@ -102,32 +103,47 @@ class Manager:
 
         return folders
     
+    def _validate_annotations(self, image_path, anno_path):
+        if not os.path.exists(image_path):
+            print(f"Image {image_path} not found")
+            return False
+        if not os.path.exists(anno_path):
+            print(f"Annotation {anno_path} not found")
+            return False
+        
+        with open(anno_path, 'r') as f:
+            anno = json.load(f)
+
+        if len(anno['words']) != len(anno['bboxes']):
+            print(f"Annotation {anno_path} has different number of words and bboxes")
+            return False
+
+        return True
+
     def _merge_all_folders(self):
-        image_counter = 0
-        json_counter = 0
+        counter = 0
+        bad_annotations = 0
         for folder_path in tqdm(self.folders):
             if os.path.isdir(folder_path):
                 # Iterate over each file in the current folder
-                for file_name in sorted(os.listdir(folder_path)):
-                    file_path = os.path.join(folder_path, file_name)
-                    if os.path.isfile(file_path):
-                        # Check if the file is an image or a JSON
-                        if file_name.endswith('.png'):
-                            # Create new file name
-                            new_file_name = f'im_{image_counter}.png'
-                            image_counter += 1
-                        elif file_name.endswith('.png.json'):
-                            # Create new file name
-                            new_file_name = f'im_{json_counter}.png.json'
-                            json_counter += 1
-                        else:
-                            continue
+                for file_name in sorted([f for f in os.listdir(folder_path) if f.endswith('.png.json')]):
+                    json_path = os.path.join(folder_path, file_name)
 
-                        # Define the new file path
+                    if self._validate_annotations(json_path[:-5], json_path):
+                        new_file_name = f"image_{counter}.png"   
+                        new_json_name = f"image_{counter}.png.json"
+
                         new_file_path = os.path.join(self.out_dir, new_file_name)
+                        new_json_path = os.path.join(self.out_dir, new_json_name)
 
                         # Move and rename the file
-                        shutil.move(file_path, new_file_path)
+                        shutil.move(json_path[:-5], new_file_path)
+                        shutil.move(json_path, new_json_path)
+                        counter += 1
+                    else:
+                        bad_annotations += 1
         
         for i in range(self.num_processes):
             shutil.rmtree(self.out_dir / f'tmp_process_{i}')
+
+        print(f'Folder merge finished, bad annotations: {bad_annotations}')
