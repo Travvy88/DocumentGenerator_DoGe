@@ -21,10 +21,14 @@ Check the full size (1024x1024) in [resources](./resources) folder.
 
 You can use Docker image with predefined environment to run DoGe:
 ```bash
-git clone https://github.com/Travvy88/DoGe
-cd DoGe
-docker build -t doge . && docker run -it doge
+git clone https://github.com/Travvy88/DocumentGenerator_DoGe
+cd DocumentGenerator_DoGe
+docker build -t doge .
+docker run -it -v /path/to/output/folder/on/host:/app/data doge
 ```
+
+Replace `/path/to/output/folder/on/host` and run commands. Inside the docker container you can
+[start document generation](#start-data-generation). 
 
 ### Ubuntu
 
@@ -34,15 +38,15 @@ Doge is tested on Ubuntu 22.04.
 sudo apt-get update && apt-get install libreoffice libjpeg-dev zlib1g-dev poppler-utils
 /usr/bin/python3 -m pip install --user unoserver  # install unoserver to system python
 
-git clone https://github.com/Travvy88/DoGe
-cd DoGe
+git clone https://github.com/Travvy88/DocumentGenerator_DoGe
+cd DocumentGenerator_DoGe
 pip3 install -r requirements.txt  # there you can make venv if needed!
 ```
 
 ## Start Data Generation
 
 ```bash
-python3 main.py --out_dir data --image_size 244 --max_urls 16 --num_processes 2 --ports 4000 4001 4002 4003 --languages en ru
+python3 main.py --out_dir data --image_size 244 --max_urls 4 --num_processes 2 --ports 4000 4001 4002 4003
 ```
 
 ### Main.py
@@ -52,8 +56,8 @@ The following arguments can be passed to the script:
 - `--out_dir`: The output directory for saving results. This argument is required.
 - `--remove_existing_dir`: If set to `True`, the output directory will be deleted before creating a new one. Default is `False`.
 - `--image_size`: The size of the final images. Default is `244`.
-- `--start_page`: The starting page URL. Default is the Wikipedia main page.
-- `--languages`: Permitted languages. Other languages will be ignored. Default is `['en']`.
+- `--start_page`: The starting page URL. Default is the Wikipedia main English page. You can use another language Wiki man page URL.
+- `--languages`: Permitted languages. Pages with other localizations will be ignored. Default is `['en']`.
 - `--max_urls`: The maximum number of URLs to process. Default is `100`.
 - `--num_processes`: The number of processes to use. Default is `1`. Each process will start DocumentGenerator inside and start separate Unoserver.
 - `--max_threads`: The maximum threads inside a process. Default is `3`.
@@ -135,14 +139,14 @@ and saving the augmented images to disk. That's it!
 
 ## Future Plan
 
-- Download and place images into documents
-- Annotate headers, tables, paragraphs
-- Different output formats
+- Improve pipeline to download and place images into documents
+- Add annotations of headers, tables, paragraphs
+- Add different output formats (Parquet for example)
 
 ## Acknowledgments
 Here are some great open-source projects I benefit from:
 - [ISP RAS Dedoc Team](https://github.com/ispras/dedoc) for support and assistance. 
 - [Augraphy](https://github.com/sparkfish/augraphy) for augmentation code of final images. 
-- [Unoserver](https://github.com/unoconv/unoserver) for method of converting Docx to Pdf.
-- [Pdf2image](https://github.com/Belval/pdf2image) for module for rendering images from Pdf.
-- [Pillow-SIMD](https://github.com/uploadcare/pillow-simd) for faster processing of images. 
+- [Unoserver](https://github.com/unoconv/unoserver) for Docx to Pdf converter.
+- [Pdf2image](https://github.com/Belval/pdf2image) for image from Pdf rendering module.
+- [Pillow-SIMD](https://github.com/uploadcare/pillow-simd) for faster image processing. 
