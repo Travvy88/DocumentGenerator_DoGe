@@ -10,7 +10,7 @@ import matplotlib.font_manager
 import numba
 import numpy as np
 from pdf2image import convert_from_bytes
-
+from PIL import Image
 def profileit(func):
     def wrapper(*args, **kwargs):
         datafn = func.__name__ + ".profile" # Name the data file sensibly
@@ -241,12 +241,12 @@ class DocxDocument:
         self.doc.save(path)
 
     #@profileit
-    def get_images(self, image_size, dpi):
+    def get_images(self, image_size, dpi) -> list[Image]:
         out = io.BytesIO()
         self.doc.save(out)
         doc_bytes = out.getvalue()
         pdf_bytes = self.uno_client.convert(indata=doc_bytes, convert_to='pdf')
-        return convert_from_bytes(pdf_bytes, dpi=dpi, size=image_size)
+        return convert_from_bytes(pdf_bytes, dpi=dpi, size=image_size) 
     
     def convert_to_uncolored_docx(self):
         for paragraph in self.doc.paragraphs:
