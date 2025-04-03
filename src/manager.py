@@ -16,6 +16,7 @@ class Manager:
                  docx_config: dict,
                  out_dir: Path, 
                  remove_existing_dir,
+                 debug,
                  image_size, 
                  start_page,
                  languages, 
@@ -26,6 +27,7 @@ class Manager:
         
         self.docx_config = docx_config
         self.out_dir = out_dir
+        self.debug = debug
         self.image_size = image_size
         self.start_page = start_page
         self.languages = languages
@@ -42,7 +44,8 @@ class Manager:
                                                  self.docx_config, 
                                                  self.folders[i], 
                                                  ports[i], 
-                                                 ports[num_processes + i]) \
+                                                 ports[num_processes + i],
+                                                 self.debug,) \
                                for i in range(num_processes)]
 
     def generate(self):
@@ -139,14 +142,14 @@ class Manager:
                         # Move and rename the file
                         shutil.move(json_path[:-5], new_file_path)
                         shutil.move(json_path, new_json_path)
-                        print(f'{json_path} -> {new_json_path}')
-                        print(f'{json_path[:-5]} -> {new_file_path}')
+                        #print(f'{json_path} -> {new_json_path}')
+                        #print(f'{json_path[:-5]} -> {new_file_path}')
                         
                         # Move the colored image
                         _, number = file_name.split("_")
                         number = number.split(".")[0]
-                        print(f'{folder_path}/im_{number}_colored.png -> {new_file_path[:-4] + "_colored.png"}')
-                        print('--------------------------------')
+                        #print(f'{folder_path}/im_{number}_colored.png -> {new_file_path[:-4] + "_colored.png"}')
+                        #print('--------------------------------')
                         if os.path.exists(f"{folder_path}/im_{number}_colored.png"):
                             shutil.move(f"{folder_path}/im_{number}_colored.png", new_file_path[:-4] + "_colored.png")
 

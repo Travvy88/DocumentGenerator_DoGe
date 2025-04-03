@@ -35,12 +35,14 @@ Replace `/path/to/output/folder/on/host` and run commands. Inside the docker con
 For faster generation, it is recommended to install all dependencies without Docker. 
 Doge is tested on Ubuntu 22.04.
 ```bash
-sudo apt-get update && apt-get install libreoffice libjpeg-dev zlib1g-dev poppler-utils
-/usr/bin/python3 -m pip install --user unoserver  # install unoserver to system python
+sudo apt-get update 
+sudo apt-get install libreoffice libjpeg-dev zlib1g-dev poppler-utils
+/usr/bin/python3 -m pip install --user unoserver  # install unoserver on system python
 
 git clone https://github.com/Travvy88/DocumentGenerator_DoGe
 cd DocumentGenerator_DoGe
-pip3 install -r requirements.txt  # there you can make venv if needed!
+# there you can make venv if needed!
+pip3 install -r requirements.txt 
 ```
 
 ## Start Data Generation
@@ -54,14 +56,15 @@ python3 main.py --out_dir data --image_size 244 --max_urls 4 --num_processes 2 -
 The following arguments can be passed to the script:
 
 - `--out_dir`: The output directory for saving results. This argument is required.
-- `--remove_existing_dir`: If set to `True`, the output directory will be deleted before creating a new one. Default is `False`.
+- `--remove_existing_dir`: If set, the output directory will be deleted before creating a new one.
 - `--image_size`: The size of the final images. Default is `244`.
 - `--start_page`: The starting page URL. Default is the Wikipedia main English page. You can use another language Wiki man page URL.
 - `--languages`: Permitted languages. Pages with other localizations will be ignored. Default is `['en']`.
 - `--max_urls`: The maximum number of URLs to process. Default is `100`.
-- `--num_processes`: The number of processes to use. Default is `1`. Each process will start DocumentGenerator inside and start separate Unoserver.
+- `--num_processes`: The number of processes to use. Default is `1`. Each process will start DocumentGenerator and start Unoserver for each generator.
 - `--max_threads`: The maximum threads inside a process. Default is `3`.
-- `--ports`: The list of ports to use. Default is `[8145, 8146]`. The number of ports should be 2 times larger than `num_processes`.
+- `--ports`: The list of ports to use. Default is `[8145, 8146]`. The number of ports should be 2 times larger than `num_processes` (each Unoserver instance needs 2 ports for proper multicore work)
+- `--debug`: If set, draws bounding boxes + words on each image and saves itermediate images with highlighted words.
 
 
 ### Docx_config.json

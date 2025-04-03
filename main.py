@@ -10,8 +10,10 @@ def create_parser():
     
     parser.add_argument('--out_dir', type=str, required=True,
                         help='Output directory for saving results')
-    parser.add_argument('--remove_existing_dir', type=bool, default=False,
-                        help='If out_dir excists, delete the folder and files before creating a new one')
+    parser.add_argument('--remove_existing_dir', action='store_true',
+                        help='If out_dir exists, delete the folder and files before creating a new one')
+    parser.add_argument('--debug', action='store_true',
+                        help='Enable debug mode')
     parser.add_argument('--image_size', type=int, default=244,
                         help='Size of the final images (default: 244)')
     parser.add_argument('--start_page', type=str, default='https://en.wikipedia.org/wiki/Main_Page',
@@ -41,6 +43,7 @@ if __name__ == "__main__":
         docx_config=docx_config,
         out_dir=Path(args.out_dir),
         remove_existing_dir=args.remove_existing_dir,
+        debug=args.debug,
         image_size=args.image_size,
         start_page=args.start_page,
         languages=tuple(args.languages),

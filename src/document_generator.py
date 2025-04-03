@@ -34,18 +34,17 @@ def profileit(func):
     return wrapper
 
 class DocumentGenerator:
-    def __init__(self, max_threads, image_size, docx_config, out_folder, port, uno_port):
+    def __init__(self, max_threads, image_size, docx_config, out_folder, port, uno_port, debug_mode):
         self.max_threads = max_threads
         self.image_size = image_size
         self.out_folder = out_folder
         self.docx_config = docx_config
         self.port = port
         self.uno_port = uno_port
+        self.debug_mode = debug_mode
         
         self.image_counter = 0
-        
-        self.debug_mode = True
-
+    
         command = f"/usr/bin/python3 -m unoserver.server --port {port} --uno-port {uno_port} > /dev/null 2>&1"
         print('START SERVER', port, uno_port)
         self.unoserver_process = subprocess.Popen(command, shell=True)
