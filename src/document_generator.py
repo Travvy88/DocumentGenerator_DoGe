@@ -14,7 +14,7 @@ from augraphy import AugraphyPipeline
 from unoserver import client
 import requests
 from tqdm import tqdm
-from PIL import ImageDraw
+from PIL import Image, ImageDraw
 import cv2 
 import threading
 
@@ -106,21 +106,24 @@ class DocumentGenerator:
             augmentation_pipeline = AugraphyPipeline(bounding_boxes=bounding_boxes,
                                                      log=False, **get_augmentation_phases())
             augmented_cv2, _, _, augmented_bounding_boxes = augmentation_pipeline(np.array(image))
+            augmented_image = Image.fromarray(augmented_cv2)
             with threading.Lock():
                 if self.debug_mode:
-                    utils.draw_bboxes(image, augmented_bounding_boxes, annotations[i]["words"])
-                    utils.draw_bboxes(colored_images[i], augmented_bounding_boxes, annotations[i]["words"])
-                    colored_images[i].save(self.out_folder / f"im_{self.image_counter}_colored.png")
+                    bboxes_for_image = utils.normalize_bboxes(augmented_bounding_boxes, colored_images[0].size[0], colored_images[0].size[1])
+                    bboxes_for_image = utils.unnormalize_bboxes(bboxes_for_image, augmented_image.size[0], augmented_image.size[1])
+
+                    augmented_image = utils.draw_bboxes_pil(augmented_image, bboxes_for_image, annotations[i]["words"])
+                    colored_image = utils.draw_bboxes_pil(colored_images[i], bounding_boxes, annotations[i]["words"])
+                    colored_image.save(self.out_folder / f"im_{self.image_counter}_colored.png")
 
                 # resize image to final dataset size and save 
-                augmented_cv2 = cv2.resize(augmented_cv2, (self.image_size, self.image_size))
-                cv2.imwrite(str(self.out_folder / f"im_{self.image_counter}.png"), augmented_cv2)
+                augmented_image = augmented_image.resize((self.image_size, self.image_size))
+                augmented_image.save(self.out_folder / f"im_{self.image_counter}.png")
                 
                 # convert booxes to (x, y, w, h) format and normalize to [0,1]
                 augmented_bounding_boxes = np.array(augmented_bounding_boxes).astype(int)
-                width, height = image.size
-                annotations[i]["bboxes"] = utils.normalize_bboxes(augmented_bounding_boxes, width, height).tolist()
-
+                annotations[i]["bboxes"] = utils.normalize_bboxes(augmented_bounding_boxes, colored_images[0].size[0], colored_images[0].size[1]).tolist()
+                
                 # save annotation
                 with open(self.out_folder/ f"im_{self.image_counter}.png.json", "w") as f:
                     json.dump(annotations[i], f)

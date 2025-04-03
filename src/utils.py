@@ -1,4 +1,5 @@
-from PIL import ImageDraw
+from PIL import Image, ImageDraw
+import cv2
 import numpy as np
 
 
@@ -45,20 +46,28 @@ def unnormalize_bboxes(bboxes, width, height):
         el4 = bboxes[:, 3] * height
         return np.column_stack((el1, el2, el3, el4))
 
+def draw_bboxes_pil(image, bboxes, words=None):
+    draw = ImageDraw.Draw(image)
+    for bbox, word in zip(bboxes, words):
+        x1, y1, x2, y2 = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
+        # Draw rectangle with red color and 2px thickness
+        draw.rectangle([(x1, y1), (x2, y2)], outline="red", width=2)
+        # Optionally add text labels above the boxes
+        draw.text((x1, y1-15), word, fill="red")
+    return image
 
 def draw_bboxes(image, bboxes, words=None):
     # bboxes in x1, y1, x2, y2 format
     if words is None:
         words = [""] * len(bboxes)
     
-    # Create a drawing object
-    draw = ImageDraw.Draw(image)
-    
-    for bbox, word in zip(bboxes, words):
-        x1, y1, x2, y2 = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
-        # Draw rectangle with red color and 2px thickness
-        draw.rectangle([(x1, y1), (x2, y2)], outline=(255, 0, 0), width=2)
-        # Optionally add text labels above the boxes
-        draw.text((x1, y1-15), word, fill=(255, 0, 0))
-    
+    if isinstance(image, np.ndarray):
+        image = Image.fromarray(image)
+        image = draw_bboxes_pil(image, bboxes, words)
+        image = np.array(image)
+    elif isinstance(image, Image.Image):
+        image = draw_bboxes_pil(image, bboxes, words)
+    else:
+        raise ValueError(f"Unsupported image type: {type(image)}")
+        
     return image
